@@ -3,13 +3,42 @@
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline';">
     <title>Cashbook</title>
   </head>
   <body>
     <h1>Cashbook</h1>
-    We are using Node.js <span id="node-version"></span>,
-    Chromium <span id="chrome-version"></span>,
-    and Electron <span id="electron-version"></span>.
+    <table id="records-table" border="1">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Income</th>
+          <th>Expense</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- データはここに挿入されます -->
+      </tbody>
+    </table>
+    <script>
+      window.api.getRecords().then(records => {
+        const tableBody = document.querySelector('#records-table tbody');
+        records.forEach(record => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+            <td>${record.id}</td>
+            <td>${record.date}</td>
+            <td>${record.description}</td>
+            <td>${record.income}</td>
+            <td>${record.expense}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      }).catch(error => {
+        console.error('Failed to fetch records:', error);
+      });
+    </script>
   </body>
 </html>
