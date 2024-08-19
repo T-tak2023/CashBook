@@ -42,6 +42,22 @@ app.whenReady().then(() => {
     });
   });
 
+  ipcMain.handle('add-record', async (event, record) => {
+    console.log('Add record handler triggered:', record);
+
+    return new Promise((resolve, reject) => {
+      const { date, description, income, expense } = record;
+      db.run('INSERT INTO transactions (date, description, income, expense) VALUES (?, ?, ?, ?)', [date, description, income, expense], function(err) {
+        if (err) {
+          console.error('Failed to insert record:', err);
+          reject(err);
+        } else {
+          resolve({ id: this.lastID, ...record });
+        }
+      });
+    });
+  });
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });

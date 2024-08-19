@@ -8,6 +8,20 @@
   </head>
   <body>
     <h1>Cashbook</h1>
+
+    <h2>Add Record</h2>
+    <form id="add-record-form">
+      <label for="date">Date:</label>
+      <input type="text" id="date" name="date" required>
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description">
+      <label for="income">Income:</label>
+      <input type="number" id="income" name="income" value="0">
+      <label for="expense">Expense:</label>
+      <input type="number" id="expense" name="expense" value="0">
+      <button type="submit">Add Record</button>
+    </form>
+
     <table id="records-table" border="1">
       <thead>
         <tr>
