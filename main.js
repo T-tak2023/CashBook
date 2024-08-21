@@ -12,8 +12,8 @@ const db = new sqlite3.Database('./cashbook.db', (err) => {
 
 const createWindow = () => {
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1200,
+    height: 900,
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       contextIsolation: true,
@@ -31,7 +31,7 @@ app.whenReady().then(() => {
 
   ipcMain.handle('get-records', async () => {
     return new Promise((resolve, reject) => {
-      db.all('SELECT * FROM transactions', [], (err, rows) => {
+      db.all('SELECT * FROM transactions ORDER BY date', [], (err, rows) => {
         if (err) {
           console.error('Database error:', err);
           reject(err);
@@ -53,6 +53,19 @@ app.whenReady().then(() => {
           reject(err);
         } else {
           resolve({ id: this.lastID, ...record });
+        }
+      });
+    });
+  });
+
+  ipcMain.handle('delete-record', async (event, id) => {
+    return new Promise((resolve, reject) => {
+      db.run('DELETE FROM transactions WHERE id = ?', [id], function(err) {
+        if (err) {
+          console.error('Failed to delete record:', err);
+          reject(err);
+        } else {
+          resolve();
         }
       });
     });

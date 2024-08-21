@@ -3,14 +3,23 @@ window.api.getRecords().then(records => {
   records.forEach(record => {
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${record.id}</td>
       <td>${record.date}</td>
       <td>${record.description}</td>
       <td>${record.income}</td>
       <td>${record.expense}</td>
+      <td>${record.id}</td>
+      <td><button class="delete-button" data-id="${record.id}">削除</button></td>
     `;
     tableBody.appendChild(row);
   });
+
+  document.querySelectorAll('.delete-button').forEach(button => {
+    button.addEventListener('click', event => {
+      const id = event.target.getAttribute('data-id');
+      deleteRecord(id);
+    });
+  });
+
 }).catch(error => {
   console.error('Failed to fetch records:', error);
 });
@@ -48,3 +57,15 @@ document.getElementById('add-record-form').addEventListener('submit', event => {
     console.error('Failed to add record:', error);
   });
 });
+
+function deleteRecord(id) {
+  if (confirm('このレコードを削除してもよろしいですか？')) {
+    window.api.deleteRecord(id).then(() => {
+      // レコード削除後、表示を更新
+      const row = document.querySelector(`button[data-id="${id}"]`).closest('tr');
+      row.remove();
+    }).catch(error => {
+      console.error('Failed to delete record:', error);
+    });
+  }
+}
