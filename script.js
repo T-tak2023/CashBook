@@ -27,6 +27,22 @@ window.api.getRecords().then(records => {
   console.error('Failed to fetch records:', error);
 });
 
+// 新規登録モーダルウィンドウを表示する関数
+function showAddModal() {
+  document.getElementById('add-modal').style.display = 'block';
+}
+
+// 新規登録モーダルウィンドウを非表示にする関数
+function hideAddModal() {
+  document.getElementById('add-modal').style.display = 'none';
+}
+
+// 「新規登録」ボタンにイベントリスナーを追加
+document.getElementById('show-add-modal').addEventListener('click', showAddModal);
+
+// 「キャンセル」ボタンにイベントリスナーを追加
+document.getElementById('cancel-add').addEventListener('click', hideAddModal);
+
 document.getElementById('add-record-form').addEventListener('submit', event => {
   event.preventDefault();
 
@@ -59,6 +75,8 @@ document.getElementById('add-record-form').addEventListener('submit', event => {
     tableBody.appendChild(row);
 
     alert('登録しました');
+
+    hideAddModal();
 
     row.querySelector('.edit-button').addEventListener('click', (event) => {
       const id = event.target.getAttribute('data-id');

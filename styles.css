@@ -1,4 +1,4 @@
-#edit-modal {
+.modal {
   display: none;
   position: fixed;
   top: 50%;
@@ -8,4 +8,52 @@
   padding: 20px;
   border: 1px solid black;
   z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.modal div {
+  max-width: 500px;
+  margin: auto;
+}
+
+.modal h2 {
+  margin-top: 0;
+}
+
+.modal form p {
+  margin-bottom: 10px;
+}
+
+.modal form input,
+.modal form button {
+  display: block;
+  width: 100%;
+}
+
+.modal form button {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.modal form button#cancel-edit,
+.modal form button#cancel-add {
+  background-color: #6c757d;
+}
+
+.modal form button:hover {
+  opacity: 0.8;
+}
+
+#show-add-modal {
+  margin-top: 10px;
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+}
+
