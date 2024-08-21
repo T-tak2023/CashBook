@@ -58,6 +58,8 @@ document.getElementById('add-record-form').addEventListener('submit', event => {
     `;
     tableBody.appendChild(row);
 
+    alert('登録しました');
+
     row.querySelector('.edit-button').addEventListener('click', (event) => {
       const id = event.target.getAttribute('data-id');
       editRecord(id);
