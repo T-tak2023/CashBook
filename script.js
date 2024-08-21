@@ -46,15 +46,36 @@ document.getElementById('add-record-form').addEventListener('submit', event => {
     const tableBody = document.querySelector('#records-table tbody');
     const row = document.createElement('tr');
     row.innerHTML = `
-      <td>${newRecord.id}</td>
       <td>${newRecord.date}</td>
       <td>${newRecord.description}</td>
       <td>${newRecord.income}</td>
       <td>${newRecord.expense}</td>
+      <td>${newRecord.id}</td>
+      <td>
+        <button class="edit-button" data-id="${newRecord.id}">修正</button>
+        <button class="delete-button" data-id="${newRecord.id}">削除</button>
+      </td>
     `;
     tableBody.appendChild(row);
 
-    // Reset form
+    row.querySelector('.edit-button').addEventListener('click', (event) => {
+      const id = event.target.getAttribute('data-id');
+      editRecord(id);
+    });
+    row.querySelector('.delete-button').addEventListener('click', (event) => {
+      const id = event.target.getAttribute('data-id');
+      deleteRecord(id);
+    });
+
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+    rows.sort((a, b) => {
+      const dateA = new Date(a.cells[0].textContent);
+      const dateB = new Date(b.cells[0].textContent);
+      return dateA - dateB;
+    });
+
+    rows.forEach(row => tableBody.appendChild(row));
+
     form.reset();
   }).catch(error => {
     console.error('Failed to add record:', error);
@@ -97,4 +118,42 @@ document.querySelector('#records-table').addEventListener('click', event => {
 
 document.getElementById('cancel-edit').addEventListener('click', () => {
   document.getElementById('edit-modal').style.display = 'none';
+});
+
+document.getElementById('edit-record-form').addEventListener('submit', event => {
+  event.preventDefault();
+
+  console.log('Edit form submitted');
+
+  const form = event.target;
+  const record = {
+    id: form['id'].value,
+    date: form['date'].value,
+    description: form['description'].value,
+    income: parseInt(form['income'].value, 10),
+    expense: parseInt(form['expense'].value, 10)
+  };
+
+  console.log('Record to update:', record);
+
+  window.api.updateRecord(record).then(updatedRecord => {
+    // 更新されたレコードを表示に反映
+    const row = document.querySelector(`button[data-id="${updatedRecord.id}"]`).closest('tr');
+    row.innerHTML = `
+      <td>${updatedRecord.date}</td>
+      <td>${updatedRecord.description}</td>
+      <td>${updatedRecord.income}</td>
+      <td>${updatedRecord.expense}</td>
+      <td>${updatedRecord.id}</td>
+      <td>
+        <button class="edit-button" data-id="${updatedRecord.id}">修正</button>
+        <button class="delete-button" data-id="${updatedRecord.id}">削除</button>
+      </td>
+    `;
+
+    // モーダルを閉じる
+    document.getElementById('edit-modal').style.display = 'none';
+  }).catch(error => {
+    console.error('Failed to update record:', error);
+  });
 });

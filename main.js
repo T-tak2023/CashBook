@@ -84,6 +84,26 @@ app.whenReady().then(() => {
     });
   });
 
+  ipcMain.handle('update-record', async (event, record) => {
+    console.log('Update record handler triggered:', record);
+
+    return new Promise((resolve, reject) => {
+      const { id, date, description, income, expense } = record;
+      db.run(
+        'UPDATE transactions SET date = ?, description = ?, income = ?, expense = ? WHERE id = ?',
+        [date, description, income, expense, id],
+        function (err) {
+          if (err) {
+            console.error('Failed to update record:', err);
+            reject(err);
+          } else {
+            resolve(record);
+          }
+        }
+      );
+    });
+  });
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
