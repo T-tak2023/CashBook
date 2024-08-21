@@ -49,6 +49,19 @@ document.getElementById('add-record-form').addEventListener('submit', event => {
   console.log('Form submitted');
 
   const form = event.target;
+  const income = parseInt(form.income.value, 10);
+  const expense = parseInt(form.expense.value, 10);
+
+  if (income > 0 && expense > 0) {
+    alert('収入と支出の両方に値を入力することはできません。どちらか一方だけにしてください。');
+    return;
+  }
+
+  if (income <= 0 && expense <= 0) {
+    alert('収入または支出のいずれかに値を入力してください。');
+    return;
+  }
+
   const record = {
     date: form.date.value,
     description: form.description.value,
