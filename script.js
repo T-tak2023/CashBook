@@ -72,3 +72,29 @@ function deleteRecord(id) {
     });
   }
 }
+
+document.querySelector('#records-table').addEventListener('click', event => {
+  if (event.target.classList.contains('edit-button')) {
+    const id = event.target.getAttribute('data-id');
+    // APIからレコードを取得
+    window.api.getRecordById(id).then(record => {
+      console.log('Fetched record:', record);
+
+      // モーダルのフォームにデータをセット
+      document.getElementById('edit-id').value = record.id;
+      document.getElementById('edit-date').value = record.date;
+      document.getElementById('edit-description').value = record.description;
+      document.getElementById('edit-income').value = record.income;
+      document.getElementById('edit-expense').value = record.expense;
+
+      // モーダルを表示
+      document.getElementById('edit-modal').style.display = 'block';
+    }).catch(error => {
+      console.error('Failed to fetch record:', error);
+    });
+  }
+});
+
+document.getElementById('cancel-edit').addEventListener('click', () => {
+  document.getElementById('edit-modal').style.display = 'none';
+});

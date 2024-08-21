@@ -71,6 +71,19 @@ app.whenReady().then(() => {
     });
   });
 
+  ipcMain.handle('get-record-by-id', async (event, id) => {
+    return new Promise((resolve, reject) => {
+      db.get('SELECT * FROM transactions WHERE id = ?', [id], (err, row) => {
+        if (err) {
+          console.error('Failed to fetch record:', err);
+          reject(err);
+        } else {
+          resolve(row);
+        }
+      });
+    });
+  });
+
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow();
   });
