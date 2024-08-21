@@ -5,6 +5,7 @@
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
     <title>Cashbook</title>
+    <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <h1>Cashbook</h1>
@@ -48,6 +49,35 @@
           <!-- データはここに挿入されます -->
         </tbody>
       </table>
+
+      <div id="edit-modal">
+        <div>
+          <h2>レコード修正</h2>
+          <form id="edit-record-form">
+            <p>
+              <label for="edit-date">年月日:</label>
+              <input type="date" id="edit-date" name="date" required>
+            </p>
+            <p>
+              <label for="edit-description">摘要:</label>
+              <input type="text" id="edit-description" name="description">
+            </p>
+            <p>
+              <label for="edit-income">収入:</label>
+              <input type="number" id="edit-income" name="income" value="0" min="0" step="1">
+            </p>
+            <p>
+              <label for="edit-expense">支出:</label>
+              <input type="number" id="edit-expense" name="expense" value="0" min="0" step="1">
+            </p>
+            <p>
+              <input type="hidden" id="edit-id" name="id">
+              <button type="submit">保存</button>
+              <button type="button" id="cancel-edit">キャンセル</button>
+            </p>
+          </form>
+        </div>
+      </div>
     <script src="script.js"></script>
   </body>
 </html>

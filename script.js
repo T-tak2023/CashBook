@@ -8,7 +8,10 @@ window.api.getRecords().then(records => {
       <td>${record.income}</td>
       <td>${record.expense}</td>
       <td>${record.id}</td>
-      <td><button class="delete-button" data-id="${record.id}">削除</button></td>
+      <td>
+        <button class="edit-button" data-id="${record.id}">修正</button>
+        <button class="delete-button" data-id="${record.id}">削除</button>
+      </td>
     `;
     tableBody.appendChild(row);
   });
