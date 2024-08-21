@@ -9,7 +9,7 @@
   <body>
     <h1>Cashbook</h1>
 
-    <h2>Add Record</h2>
+    <h2>新規登録</h2>
     <form id="add-record-form">
       <p>
         <label for="date">年月日:</label>
@@ -32,20 +32,21 @@
       </p>
     </form>
 
-    <table id="records-table" border="1">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Date</th>
-          <th>Description</th>
-          <th>Income</th>
-          <th>Expense</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- データはここに挿入されます -->
-      </tbody>
-    </table>
+    <h2>一覧</h2>
+      <table id="records-table" border="1">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>年月日</th>
+            <th>摘要</th>
+            <th>収入</th>
+            <th>支出</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- データはここに挿入されます -->
+        </tbody>
+      </table>
     <script src="script.js"></script>
   </body>
 </html>
