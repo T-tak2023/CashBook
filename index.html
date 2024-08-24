@@ -10,6 +10,7 @@
   <body>
     <h1>Cashbook</h1>
     <button id="show-add-modal">新規登録</button>
+
     <div id="add-modal" class="modal">
       <h2>新規登録</h2>
       <form id="add-record-form">
@@ -36,7 +37,20 @@
       </form>
     </div>
 
-    <h2>一覧</h2>
+    <h2 class="show-records">レコード一覧</h2>
+
+    <div>
+      <form id="filter-form">
+        <label for="start-date">開始日:</label>
+        <input type="date" id="start-date" name="start-date">
+
+        <label for="end-date">終了日:</label>
+        <input type="date" id="end-date" name="end-date">
+
+        <button type="submit">表示</button>
+      </form>
+    </div>
+    <div>
       <table id="records-table" border="1">
         <thead>
           <tr>
@@ -51,35 +65,36 @@
         <tbody>
         </tbody>
       </table>
+    </div>
 
-      <div id="edit-modal" class="modal">
-        <div>
-          <h2>レコード修正</h2>
-          <form id="edit-record-form">
-            <p>
-              <label for="edit-date">年月日:</label>
-              <input type="date" id="edit-date" name="date" required>
-            </p>
-            <p>
-              <label for="edit-description">摘要:</label>
-              <input type="text" id="edit-description" name="description" required>
-            </p>
-            <p>
-              <label for="edit-income">収入:</label>
-              <input type="number" id="edit-income" name="income" value="0" min="0" step="1">
-            </p>
-            <p>
-              <label for="edit-expense">支出:</label>
-              <input type="number" id="edit-expense" name="expense" value="0" min="0" step="1">
-            </p>
-            <p>
-              <input type="hidden" id="edit-id" name="id">
-              <button type="submit">保存</button>
-              <button type="button" id="cancel-edit">キャンセル</button>
-            </p>
-          </form>
-        </div>
+    <div id="edit-modal" class="modal">
+      <div>
+        <h2>レコード修正</h2>
+        <form id="edit-record-form">
+          <p>
+            <label for="edit-date">年月日:</label>
+            <input type="date" id="edit-date" name="date" required>
+          </p>
+          <p>
+            <label for="edit-description">摘要:</label>
+            <input type="text" id="edit-description" name="description" required>
+          </p>
+          <p>
+            <label for="edit-income">収入:</label>
+            <input type="number" id="edit-income" name="income" value="0" min="0" step="1">
+          </p>
+          <p>
+            <label for="edit-expense">支出:</label>
+            <input type="number" id="edit-expense" name="expense" value="0" min="0" step="1">
+          </p>
+          <p>
+            <input type="hidden" id="edit-id" name="id">
+            <button type="submit">保存</button>
+            <button type="button" id="cancel-edit">キャンセル</button>
+          </p>
+        </form>
       </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

@@ -29,9 +29,14 @@ const createWindow = () => {
 app.whenReady().then(() => {
   createWindow();
 
-  ipcMain.handle('get-records', async () => {
+  ipcMain.handle('get-records-by-date-range', async (event, { startDate, endDate }) => {
     return new Promise((resolve, reject) => {
-      db.all('SELECT * FROM transactions ORDER BY date', [], (err, rows) => {
+      const query = `
+        SELECT * FROM transactions
+        WHERE date BETWEEN ? AND ?
+        ORDER BY date
+      `;
+      db.all(query, [startDate, endDate], (err, rows) => {
         if (err) {
           console.error('Database error:', err);
           reject(err);

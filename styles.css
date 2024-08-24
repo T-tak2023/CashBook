@@ -1,3 +1,7 @@
+.show-records {
+  margin-bottom: 0px;
+}
+
 .modal {
   display: none;
   position: fixed;
@@ -49,7 +53,7 @@
 }
 
 #show-add-modal {
-  margin-top: 10px;
+  margin: 10px 0;
   background-color: green;
   color: white;
   border: none;

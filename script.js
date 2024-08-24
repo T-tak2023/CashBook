@@ -1,30 +1,36 @@
-window.api.getRecords().then(records => {
-  const tableBody = document.querySelector('#records-table tbody');
-  records.forEach(record => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-      <td>${record.date}</td>
-      <td>${record.description}</td>
-      <td>${record.income}</td>
-      <td>${record.expense}</td>
-      <td>${record.id}</td>
-      <td>
-        <button class="edit-button" data-id="${record.id}">修正</button>
-        <button class="delete-button" data-id="${record.id}">削除</button>
-      </td>
-    `;
-    tableBody.appendChild(row);
-  });
+document.getElementById('filter-form').addEventListener('submit', event => {
+  event.preventDefault();
 
-  document.querySelectorAll('.delete-button').forEach(button => {
-    button.addEventListener('click', event => {
-      const id = event.target.getAttribute('data-id');
-      deleteRecord(id);
+  const startDate = document.getElementById('start-date').value;
+  const endDate = document.getElementById('end-date').value;
+
+  if (!startDate || !endDate) {
+    alert('開始日と終了日を指定してください。');
+    return;
+  }
+
+  window.api.getRecordsByDateRange({ startDate, endDate }).then(records => {
+    const tableBody = document.querySelector('#records-table tbody');
+    tableBody.innerHTML = ''; // テーブルをクリア
+
+    records.forEach(record => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${record.date}</td>
+        <td>${record.description}</td>
+        <td>${record.income}</td>
+        <td>${record.expense}</td>
+        <td>${record.id}</td>
+        <td>
+          <button class="edit-button" data-id="${record.id}">修正</button>
+          <button class="delete-button" data-id="${record.id}">削除</button>
+        </td>
+      `;
+      tableBody.appendChild(row);
     });
+  }).catch(error => {
+    console.error('Failed to fetch records:', error);
   });
-
-}).catch(error => {
-  console.error('Failed to fetch records:', error);
 });
 
 // 新規登録モーダルウィンドウを表示する関数
@@ -91,15 +97,6 @@ document.getElementById('add-record-form').addEventListener('submit', event => {
 
     hideAddModal();
 
-    row.querySelector('.edit-button').addEventListener('click', (event) => {
-      const id = event.target.getAttribute('data-id');
-      editRecord(id);
-    });
-    row.querySelector('.delete-button').addEventListener('click', (event) => {
-      const id = event.target.getAttribute('data-id');
-      deleteRecord(id);
-    });
-
     const rows = Array.from(tableBody.querySelectorAll('tr'));
     rows.sort((a, b) => {
       const dateA = new Date(a.cells[0].textContent);
@@ -140,13 +137,17 @@ document.querySelector('#records-table').addEventListener('click', event => {
       document.getElementById('edit-description').value = record.description;
       document.getElementById('edit-income').value = record.income;
       document.getElementById('edit-expense').value = record.expense;
-
-      // モーダルを表示
       document.getElementById('edit-modal').style.display = 'block';
     }).catch(error => {
       console.error('Failed to fetch record:', error);
     });
   }
+
+  if (event.target.classList.contains('delete-button')) {
+    const id = event.target.getAttribute('data-id');
+    deleteRecord(id); // 既存の削除関数を呼び出し
+  }
+
 });
 
 document.getElementById('cancel-edit').addEventListener('click', () => {
