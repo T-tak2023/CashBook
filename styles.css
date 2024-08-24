@@ -2,6 +2,14 @@
   margin-bottom: 0px;
 }
 
+.filter-wrapper {
+  display: flex;
+}
+
+#filter-form button {
+  margin-right: 5px;
+}
+
 .modal {
   display: none;
   position: fixed;
@@ -61,3 +69,15 @@
   cursor: pointer;
 }
 
+@media print {
+
+  #show-add-modal{
+    display: none;
+  }
+
+  /* 特定の列を非表示にする (操作列) */
+  #records-table th:nth-child(6),
+  #records-table td:nth-child(6) {
+    display: none;
+  }
+}

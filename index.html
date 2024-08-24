@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
   <head>
     <meta charset="UTF-8">
     <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
-    <title>Cashbook</title>
+    <title>JS出納帳</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <h1>Cashbook</h1>
+    <h1>JS出納帳</h1>
     <button id="show-add-modal">新規登録</button>
 
     <div id="add-modal" class="modal">
@@ -39,7 +39,7 @@
 
     <h2 class="show-records">レコード一覧</h2>
 
-    <div>
+    <div class="filter-wrapper">
       <form id="filter-form">
         <label for="start-date">開始日:</label>
         <input type="date" id="start-date" name="start-date">
@@ -49,6 +49,7 @@
 
         <button type="submit">表示</button>
       </form>
+      <button id="print-records">印刷</button>
     </div>
     <div>
       <table id="records-table" border="1">

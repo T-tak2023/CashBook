@@ -191,3 +191,7 @@ document.getElementById('edit-record-form').addEventListener('submit', event => 
     console.error('Failed to update record:', error);
   });
 });
+
+document.getElementById('print-records').addEventListener('click', () => {
+  window.print();
+});
