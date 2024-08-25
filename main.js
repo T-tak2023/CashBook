@@ -2,11 +2,31 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path')
 const sqlite3 = require('sqlite3').verbose();
 
-const db = new sqlite3.Database('./cashbook.db', (err) => {
+const userDataPath = app.getPath('userData'); // ユーザーデータディレクトリのパス
+const dbPath = path.join(userDataPath, 'cashbook.db'); // 絶対パスを指定
+
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Could not connect to database', err);
   } else {
-    console.log('Connected to the SQLite database');
+    console.log('Connected to the SQLite database at:', dbPath);
+    // テーブルが存在しない場合にテーブルを作成する
+    db.run(`
+      CREATE TABLE IF NOT EXISTS transactions (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        date TEXT NOT NULL,
+        description TEXT,
+        income INTEGER DEFAULT 0,
+        expense INTEGER DEFAULT 0
+    )
+    `, (err) => {
+      if (err) {
+        console.error('Failed to create table:', err);
+      } else {
+        console.log('Table `transactions` is ready.');
+        initializeData(); // テーブル作成後にデータを挿入
+      }
+    });
   }
 });
 
@@ -21,10 +41,10 @@ const createWindow = () => {
       nodeIntegration: false,
       sandbox: false,
     }
-  })
+  });
 
-  win.loadFile('index.html')
-}
+  win.loadFile('index.html');
+};
 
 app.whenReady().then(() => {
   createWindow();
@@ -117,3 +137,41 @@ app.whenReady().then(() => {
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
 })
+
+// 固定の初期データ
+const initializeData = () => {
+  const sampleData = [
+    // 2024年8月
+    { date: '2024-08-05', description: 'オフィスのレンタル料', income: 0, expense: 1500 },
+    { date: '2024-08-20', description: '給与支払い', income: 0, expense: 3000 },
+    { date: '2024-08-01', description: '取引先Aへの支払い', income: 0, expense: 1000 },
+    { date: '2024-08-15', description: '備品購入', income: 0, expense: 500 },
+    { date: '2024-08-10', description: '売上報告', income: 2000, expense: 0 },
+
+    // 2024年9月
+    { date: '2024-09-18', description: '売上報告', income: 2500, expense: 0 },
+    { date: '2024-09-25', description: '交通費', income: 0, expense: 300 },
+    { date: '2024-09-02', description: 'プロジェクト費用', income: 0, expense: 1200 },
+    { date: '2024-09-07', description: '会議費用', income: 0, expense: 800 },
+    { date: '2024-09-12', description: '広告宣伝費', income: 0, expense: 1500 },
+
+    // 2024年10月
+    { date: '2024-10-20', description: 'プロジェクト費用', income: 0, expense: 2000 },
+    { date: '2024-10-05', description: '取引先Bへの支払い', income: 0, expense: 1100 },
+    { date: '2024-10-01', description: '福利厚生費', income: 0, expense: 600 },
+    { date: '2024-10-15', description: 'オフィスのレンタル料', income: 0, expense: 1500 },
+    { date: '2024-10-10', description: '売上報告', income: 2200, expense: 0 }
+  ];
+
+  sampleData.forEach((record) => {
+    db.run(
+      'INSERT INTO transactions (date, description, income, expense) VALUES (?, ?, ?, ?)',
+      [record.date, record.description, record.income, record.expense],
+      (err) => {
+        if (err) {
+          console.error('Failed to insert initial data:', err);
+        }
+      }
+    );
+  });
+};

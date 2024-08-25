@@ -75,6 +75,11 @@
     display: none;
   }
 
+  #filter-form button[type="submit"],
+  #print-records {
+    display: none;
+  }
+
   /* 特定の列を非表示にする (操作列) */
   #records-table th:nth-child(6),
   #records-table td:nth-child(6) {
